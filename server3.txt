@@ -1,0 +1,31 @@
+const express = require('express');
+const axios = require('axios');
+
+const app = express();
+const PORT = 3000;
+
+app.get('/pergunta', async (req, res) => {
+  try {
+    const { tag, title } = req.query;
+    const searchParam = tag || title ? `?tag=${tag}&title=${title}` : '';
+
+    if (!searchParam) {
+      return res.status(400).json({ error: 'Parâmetros "tag" ou "title" são obrigatórios.' });
+    }
+
+    const apiUrl = `https://suporte.fb704.com.br/solucoes/search${searchParam}`;
+
+    // Faz a solicitação GET ao serviço com o parâmetro "search" na URL
+    const response = await axios.get(apiUrl);
+
+    // Retorna a resposta JSON recebida do serviço externo
+    res.json(response.data);
+  } catch (error) {
+    console.error('Erro ao realizar a integração com o serviço externo:', error);
+    res.status(500).json({ error: 'Erro interno do servidor.' });
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`Servidor Node.js rodando na porta ${PORT}`);
+});
