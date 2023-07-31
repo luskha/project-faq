@@ -8,7 +8,7 @@ necessario possuir as libs:
 
 axios (npm install axios)
 express (npm install express)
-cheerios (npm install cheerios)
+cheerios (npm install cheerio)
 
 # Descrição
 
